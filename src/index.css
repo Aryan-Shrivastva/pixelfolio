@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background text-text font-arcade m-0;
+    image-rendering: pixelated;
+  }
+}
+
+* {
+  border-radius: 0 !important;
+  transition: none !important;
+}
+
+@layer utilities {
+  .shadow-hard {
+    box-shadow: 4px 4px 0px 0px #FFFF00;
+  }
+  .shadow-hard-grey {
+    box-shadow: 4px 4px 0px 0px #888888;
+  }
+}
+
+/* Twinkling star field */
+.star-field {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  overflow: hidden;
+  background: #05050A;
+}
+
+.star {
+  position: absolute;
+  background: white;
+  animation: twinkle infinite alternate;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.1; }
+  100% { opacity: 1; }
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: #05050A;
+  border-left: 2px solid #888888;
+}
+::-webkit-scrollbar-thumb {
+  background: #FFFF00;
+  border: 2px solid #000;
+}
