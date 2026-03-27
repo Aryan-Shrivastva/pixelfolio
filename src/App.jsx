@@ -92,9 +92,10 @@ const TypewriterHeading = ({ texts, delay = 150, pause = 1500 }) => {
     
     if (isDeleting) {
       if (currentText === '') {
-        setIsDeleting(false);
-        setLoopNum(loopNum + 1);
-        timeout = setTimeout(() => {}, pause / 3);
+        timeout = setTimeout(() => {
+          setIsDeleting(false);
+          setLoopNum(loopNum + 1);
+        }, pause / 3);
       } else {
         timeout = setTimeout(() => {
           setCurrentText(currentText.slice(0, -1));

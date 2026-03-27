@@ -1,0 +1,20 @@
+
+C:\D\pixelfolio\src\App.jsx
+  95:9  error  Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+  93 |     if (isDeleting) {
+  94 |       if (currentText === '') {
+> 95 |         setIsDeleting(false);
+     |         ^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  96 |         setLoopNum(loopNum + 1);
+  97 |         timeout = setTimeout(() => {}, pause / 3);
+  98 |       } else {  react-hooks/set-state-in-effect
+
+✖ 1 problem (1 error, 0 warnings)
+
