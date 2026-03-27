@@ -173,7 +173,7 @@ function App() {
             
             <div className="inline-block mx-auto bg-surface border-4 border-muted p-6 text-primary max-w-3xl">
               <p className="text-lg md:text-xl leading-loose font-vt323 tracking-wide">
-                 {'> '}I SOFTWARE DEVELOPER, I code!!!<span className="animate-pulse">█</span>
+                 {'> '}さて、こんにちは！ 👋<span className="animate-pulse">█</span>
               </p>
             </div>
           </div>
