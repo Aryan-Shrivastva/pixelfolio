@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,7 +6,7 @@
 
 @layer base {
   body {
-    @apply bg-background text-text font-arcade m-0;
+    @apply bg-background text-text font-vt323 m-0;
     image-rendering: pixelated;
   }
 }
@@ -25,27 +25,15 @@
   }
 }
 
-/* Twinkling star field */
-.star-field {
+/* Twinkling star field canvas container */
+.star-field-container {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
   z-index: -1;
-  overflow: hidden;
   background: #05050A;
-}
-
-.star {
-  position: absolute;
-  background: white;
-  animation: twinkle infinite alternate;
-}
-
-@keyframes twinkle {
-  0% { opacity: 0.1; }
-  100% { opacity: 1; }
 }
 
 ::-webkit-scrollbar {
