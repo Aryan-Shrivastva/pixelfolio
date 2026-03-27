@@ -6,7 +6,10 @@
 
 @layer base {
   body {
-    @apply bg-background text-text font-vt323 m-0;
+    background-color: #05050A;
+    color: #FFFFFF;
+    font-family: 'VT323', monospace;
+    margin: 0;
     image-rendering: pixelated;
   }
 }
