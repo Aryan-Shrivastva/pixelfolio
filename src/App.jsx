@@ -82,72 +82,94 @@ const StarField = () => {
 
 const BootScreen = ({ onComplete }) => {
   const [lines, setLines] = useState([]);
-  
-  // Memoize sequence so it doesn't regenerate on every render
-  const bootSequence = useRef([]);
-  
+  const [isSpeeding, setIsSpeeding] = useState(false);
+  const [isExiting, setIsExiting] = useState(false);
+  const scrollRef = useRef(null);
+
+  // Auto-scroll to bottom
   useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [lines]);
+
+  // Phase controller
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsExiting(true);
+      setTimeout(onComplete, 500); // 500ms fade out transition
+    }, 4000); // Overall loading screen lasts 4 seconds
+    return () => clearTimeout(timer);
+  }, [onComplete]);
+
+  // Generate logs continuously
+  useEffect(() => {
+    if (isExiting) return;
+    
     const modules = ['CORE_KERNEL', 'RAG_PIPELINE', 'NEURAL_LINK', 'VECTOR_DB', 'UI_RENDERER', 'PIXEL_MATRIX', 'AUDIO_SYS', 'NET_SOCKET', 'SYS_CACHE'];
     const actions = ['INITIALIZING', 'CONNECTING TO', 'VERIFYING', 'LOADING', 'MOUNTING', 'ALLOCATING', 'BYPASSING', 'OPTIMIZING', 'SYNCHRONIZING'];
     const statuses = ['OK', 'DONE', 'READY', 'COMPLETED', 'ESTABLISHED'];
-    
-    const seq = [];
-    for(let i=0; i<80; i++) {
-      if (i === 10) seq.push("EXECUTING STARTUP_SEQUENCE.EXE...");
-      else if (i === 40) seq.push("CONNECTION ESTABLISHED TO VECTOR DATABASE...");
-      else if (i === 78) seq.push("SYSTEM CHECK: 100% OK");
-      else if (i === 79) seq.push("ACCESS GRANTED.");
-      else {
-        const mod = modules[Math.floor(Math.random() * modules.length)];
-        const act = actions[Math.floor(Math.random() * actions.length)];
-        const addr = '0x' + Math.floor(Math.random() * 0xFFFFFF).toString(16).toUpperCase().padStart(6, '0');
-        const showStatus = Math.random() > 0.7;
-        seq.push(`${act} ${mod} AT ${addr}... ${showStatus ? statuses[Math.floor(Math.random()*statuses.length)] : ''}`);
-      }
-    }
-    bootSequence.current = seq;
-  }, []);
 
-  useEffect(() => {
-    let currentLine = 0;
+    // Overclocking speed switch
+    const speed = isSpeeding ? 15 : 60;
+    
     const interval = setInterval(() => {
-      if (currentLine < bootSequence.current.length) {
-        const text = bootSequence.current[currentLine];
-        setLines(prev => {
-          const newLines = [...prev, {
-            text: text,
-            time: new Date().toISOString().substring(11, 23)
-          }];
-          return newLines.slice(-50); // Keep only last 50 lines to prevent memory lag
-        });
-        currentLine++;
-      } else {
-        clearInterval(interval);
-        setTimeout(onComplete, 800);
-      }
-    }, 35); // Very fast lines
+      const mod = modules[Math.floor(Math.random() * modules.length)];
+      const act = actions[Math.floor(Math.random() * actions.length)];
+      const addr = '0x' + Math.floor(Math.random() * 0xFFFFFF).toString(16).toUpperCase().padStart(6, '0');
+      const showStatus = Math.random() > 0.7;
+      const text = `${act} ${mod} AT ${addr}... ${showStatus ? statuses[Math.floor(Math.random()*statuses.length)] : ''}`;
+      
+      const time = new Date().toISOString().substring(11, 23);
+      
+      setLines(prev => {
+        const newLines = [...prev, { text, time }];
+        return newLines.length > 35 ? newLines.slice(newLines.length - 35) : newLines;
+      });
+    }, speed);
 
     return () => clearInterval(interval);
-  }, [onComplete]);
+  }, [isSpeeding, isExiting]);
+
+  const startSpeed = () => setIsSpeeding(true);
+  const endSpeed = () => setIsSpeeding(false);
 
   return (
-    <div className="fixed inset-0 z-[100] bg-[#05050A] text-accent font-vt323 p-4 flex flex-col justify-end pointer-events-none overflow-hidden">
-      <div className="flex flex-col gap-0 max-w-full tracking-wider text-xs md:text-sm uppercase leading-tight font-bold">
-        {lines.map((line, i) => {
-          const isSuccess = line.text.includes("GRANTED") || line.text.includes("OK") || line.text.includes("READY");
-          return (
-            <div key={i} className="flex gap-2 w-full break-all">
-              <span className="text-accent opacity-90 whitespace-nowrap">[{line.time}]</span>
-              <span className="text-accent opacity-90">::</span>
-              <span className={isSuccess ? "text-primary break-all" : "text-accent break-all"}>{line.text}</span>
-            </div>
-          );
-        })}
-        {lines.length < 80 && (
-          <div className="flex gap-2">
-            <span className="text-accent animate-pulse inline-block w-2 md:w-3 h-4 bg-accent"></span>
-          </div>
-        )}
+    <div 
+      className={`fixed inset-0 z-[100] bg-[#05050A] text-accent p-4 md:p-8 flex flex-col justify-end cursor-pointer select-none transition-opacity duration-500 ${isExiting ? 'opacity-0' : 'opacity-100'}`}
+      onMouseDown={startSpeed}
+      onMouseUp={endSpeed}
+      onTouchStart={startSpeed}
+      onTouchEnd={endSpeed}
+    >
+      <div 
+        ref={scrollRef}
+        className={`font-vt323 text-xs md:text-sm tracking-widest uppercase leading-snug font-bold overflow-hidden relative z-10 transition-all duration-300 ${isSpeeding ? 'opacity-100' : 'opacity-80'}`}
+        style={{ 
+          maskImage: 'linear-gradient(to bottom, transparent, black 15%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 15%)',
+          maxHeight: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'flex-end'
+        }}
+      >
+        <div className="flex flex-col gap-1 w-full">
+          {lines.map((line, i) => {
+            const isSuccess = line.text.includes("GRANTED") || line.text.includes("OK") || line.text.includes("READY");
+            return (
+              <div key={i} className="flex gap-2 w-full break-all">
+                <span className="text-accent opacity-90 whitespace-nowrap">[{line.time}]</span>
+                <span className="text-accent opacity-90">::</span>
+                <span className={isSuccess ? "text-primary break-all" : "text-accent break-all"}>{line.text}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+      
+      <div className="absolute bottom-4 right-4 md:bottom-8 md:right-8 text-xs text-muted font-vt323 animate-pulse whitespace-nowrap">
+        {'> '}CLICK_AND_HOLD_TO_OVERCLOCK
       </div>
     </div>
   );
