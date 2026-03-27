@@ -80,12 +80,87 @@ const StarField = () => {
   return <canvas ref={canvasRef} className="star-field-container" />;
 };
 
-const TypewriterHeading = ({ texts, delay = 150, pause = 1500 }) => {
+const BootScreen = ({ onComplete }) => {
+  const [lines, setLines] = useState([]);
+  
+  // Memoize sequence so it doesn't regenerate on every render
+  const bootSequence = useRef([]);
+  
+  useEffect(() => {
+    const modules = ['CORE_KERNEL', 'RAG_PIPELINE', 'NEURAL_LINK', 'VECTOR_DB', 'UI_RENDERER', 'PIXEL_MATRIX', 'AUDIO_SYS', 'NET_SOCKET', 'SYS_CACHE'];
+    const actions = ['INITIALIZING', 'CONNECTING TO', 'VERIFYING', 'LOADING', 'MOUNTING', 'ALLOCATING', 'BYPASSING', 'OPTIMIZING', 'SYNCHRONIZING'];
+    const statuses = ['OK', 'DONE', 'READY', 'COMPLETED', 'ESTABLISHED'];
+    
+    const seq = [];
+    for(let i=0; i<80; i++) {
+      if (i === 10) seq.push("EXECUTING STARTUP_SEQUENCE.EXE...");
+      else if (i === 40) seq.push("CONNECTION ESTABLISHED TO VECTOR DATABASE...");
+      else if (i === 78) seq.push("SYSTEM CHECK: 100% OK");
+      else if (i === 79) seq.push("ACCESS GRANTED.");
+      else {
+        const mod = modules[Math.floor(Math.random() * modules.length)];
+        const act = actions[Math.floor(Math.random() * actions.length)];
+        const addr = '0x' + Math.floor(Math.random() * 0xFFFFFF).toString(16).toUpperCase().padStart(6, '0');
+        const showStatus = Math.random() > 0.7;
+        seq.push(`${act} ${mod} AT ${addr}... ${showStatus ? statuses[Math.floor(Math.random()*statuses.length)] : ''}`);
+      }
+    }
+    bootSequence.current = seq;
+  }, []);
+
+  useEffect(() => {
+    let currentLine = 0;
+    const interval = setInterval(() => {
+      if (currentLine < bootSequence.current.length) {
+        const text = bootSequence.current[currentLine];
+        setLines(prev => {
+          const newLines = [...prev, {
+            text: text,
+            time: new Date().toISOString().substring(11, 23)
+          }];
+          return newLines.slice(-50); // Keep only last 50 lines to prevent memory lag
+        });
+        currentLine++;
+      } else {
+        clearInterval(interval);
+        setTimeout(onComplete, 800);
+      }
+    }, 35); // Very fast lines
+
+    return () => clearInterval(interval);
+  }, [onComplete]);
+
+  return (
+    <div className="fixed inset-0 z-[100] bg-[#05050A] text-accent font-vt323 p-4 flex flex-col justify-end pointer-events-none overflow-hidden">
+      <div className="flex flex-col gap-0 max-w-full tracking-wider text-xs md:text-sm uppercase leading-tight font-bold">
+        {lines.map((line, i) => {
+          const isSuccess = line.text.includes("GRANTED") || line.text.includes("OK") || line.text.includes("READY");
+          return (
+            <div key={i} className="flex gap-2 w-full break-all">
+              <span className="text-accent opacity-90 whitespace-nowrap">[{line.time}]</span>
+              <span className="text-accent opacity-90">::</span>
+              <span className={isSuccess ? "text-primary break-all" : "text-accent break-all"}>{line.text}</span>
+            </div>
+          );
+        })}
+        {lines.length < 80 && (
+          <div className="flex gap-2">
+            <span className="text-accent animate-pulse inline-block w-2 md:w-3 h-4 bg-accent"></span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const TypewriterHeading = ({ texts, delay = 150, pause = 1500, start = true }) => {
   const [currentText, setCurrentText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   const [loopNum, setLoopNum] = useState(0);
 
   useEffect(() => {
+    if (!start) return;
+    
     let timeout;
     const i = loopNum % texts.length;
     const text = texts[i];
@@ -114,12 +189,13 @@ const TypewriterHeading = ({ texts, delay = 150, pause = 1500 }) => {
     }
 
     return () => clearTimeout(timeout);
-  }, [currentText, isDeleting, texts, loopNum, delay, pause]);
+  }, [currentText, isDeleting, texts, loopNum, delay, pause, start]);
 
   return <span>{currentText}<span className="animate-pulse opacity-80">_</span></span>;
 };
 
 function App() {
+  const [isBooted, setIsBooted] = useState(false);
   const [activeSection, setActiveSection] = useState('HOME');
 
   const navLinks = ['HOME', 'ABOUT', 'EXPERIENCE', 'PROJECTS', 'BLOG', 'CONTACT'];
@@ -131,6 +207,7 @@ function App() {
 
   return (
     <div className="min-h-screen text-text uppercase relative">
+      {!isBooted && <BootScreen onComplete={() => setIsBooted(true)} />}
       <StarField />
       
       {/* Top Navigation Bar */}
@@ -168,6 +245,7 @@ function App() {
                 ]} 
                 delay={100} 
                 pause={1500} 
+                start={isBooted}
               />
             </h1>
             
