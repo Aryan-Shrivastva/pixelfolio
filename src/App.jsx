@@ -80,6 +80,44 @@ const StarField = () => {
   return <canvas ref={canvasRef} className="star-field-container" />;
 };
 
+const TypewriterHeading = ({ texts, delay = 150, pause = 1500 }) => {
+  const [currentText, setCurrentText] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [loopNum, setLoopNum] = useState(0);
+
+  useEffect(() => {
+    let timeout;
+    const i = loopNum % texts.length;
+    const text = texts[i];
+    
+    if (isDeleting) {
+      if (currentText === '') {
+        setIsDeleting(false);
+        setLoopNum(loopNum + 1);
+        timeout = setTimeout(() => {}, pause / 3);
+      } else {
+        timeout = setTimeout(() => {
+          setCurrentText(currentText.slice(0, -1));
+        }, delay / 2);
+      }
+    } else {
+      if (currentText === text) {
+        timeout = setTimeout(() => {
+          setIsDeleting(true);
+        }, pause);
+      } else {
+        timeout = setTimeout(() => {
+          setCurrentText(text.slice(0, currentText.length + 1));
+        }, delay);
+      }
+    }
+
+    return () => clearTimeout(timeout);
+  }, [currentText, isDeleting, texts, loopNum, delay, pause]);
+
+  return <span>{currentText}<span className="animate-pulse opacity-80">_</span></span>;
+};
+
 function App() {
   const [activeSection, setActiveSection] = useState('HOME');
 
@@ -117,8 +155,19 @@ function App() {
         {/* 1. Home (Terminal Hero) */}
         <section id="home" className="min-h-[80vh] flex flex-col justify-center gap-12 pt-16">
           <div className="text-center flex flex-col gap-6">
-            <h1 className="text-4xl md:text-5xl lg:text-[60px] leading-tight text-white mb-4 font-arcade">
-              ARYAN SHRIVASTVA
+            <h1 className="text-4xl md:text-5xl lg:text-[60px] leading-tight text-white mb-4 font-arcade min-h-[72px]">
+              <TypewriterHeading 
+                texts={[
+                  "Aryan Shrivastva",
+                  "I Software Developer",
+                  "I Leetcode",
+                  "I CodeChef",
+                  "I like Formula 1",
+                  "Daniel Riicciardoo"
+                ]} 
+                delay={100} 
+                pause={1500} 
+              />
             </h1>
             
             <div className="inline-block mx-auto bg-surface border-4 border-muted p-6 text-primary max-w-3xl">
