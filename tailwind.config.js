@@ -13,9 +13,11 @@ export default {
         text: '#FFFFFF',
         muted: '#888888',
         accent: '#FF003C',
+        cardline: '#2A2A2A' // Darker grey for card borders
       },
       fontFamily: {
         arcade: ['"Press Start 2P"', 'monospace'],
+        vt323: ['"VT323"', 'monospace']
       },
       boxShadow: {
         'hard': '4px 4px 0px 0px rgba(0, 0, 0, 1)',
