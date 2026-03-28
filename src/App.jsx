@@ -382,10 +382,10 @@ function App() {
                 {/* Blog Post 1 */}
                 <div className="p-8 border-b border-gray-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                   <div className="flex-1">
-                    <h3 className="text-white font-vt323 text-3xl font-bold tracking-widest mb-1">A BEGINNER'S GUIDE</h3>
-                    <h3 className="text-primary font-vt323 text-3xl font-bold tracking-widest mb-4">TO PIXEL ART IN GAME DEVELOPMENT</h3>
+                    <h3 className="text-white font-vt323 text-3xl font-bold tracking-widest mb-1">Loading......</h3>
+                    <h3 className="text-primary font-vt323 text-3xl font-bold tracking-widest mb-4">Loading.....</h3>
                     <p className="text-gray-400 font-vt323 text-xl normal-case">
-                      How to create 8-bit style pixel art for your own games or projects!
+                      Loading......
                     </p>
                   </div>
                   <div className="flex flex-col items-end gap-6 shrink-0">
@@ -399,10 +399,10 @@ function App() {
                 {/* Blog Post 2 */}
                 <div className="p-8 border-b border-gray-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
                   <div className="flex-1 relative">
-                    <h3 className="text-white font-vt323 text-3xl font-bold tracking-widest mb-1">LEVEL UP YOUR JAVASCRIPT</h3>
-                    <h3 className="text-white font-vt323 text-3xl font-bold tracking-widest mb-4">SKILLS WITH THESE PROJECTS</h3>
+                    <h3 className="text-white font-vt323 text-3xl font-bold tracking-widest mb-1">Loading.....</h3>
+                    <h3 className="text-white font-vt323 text-3xl font-bold tracking-widest mb-4">Loading.....</h3>
                     <p className="text-gray-400 font-vt323 text-xl normal-case">
-                      Projects to challenge your JS skills and boost your coding level!
+                      Loading......
                     </p>
                   </div>
                   <div className="flex flex-col items-end gap-6 shrink-0">
@@ -417,9 +417,9 @@ function App() {
                 <div className="p-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 relative">
                   <div className="absolute left-[-20px] top-12 text-primary font-bold">""</div>
                   <div className="flex-1">
-                    <h3 className="text-white font-vt323 text-3xl font-bold tracking-widest mb-4">GAME DEV TOOLS I CAN'T LIVE WITHOUT</h3>
+                    <h3 className="text-white font-vt323 text-3xl font-bold tracking-widest mb-4">Loading.....</h3>
                     <p className="text-gray-400 font-vt323 text-xl normal-case">
-                      My must-have tools for indie game development!
+                      Loading......
                     </p>
                   </div>
                   <div className="flex flex-col items-end gap-6 shrink-0">
@@ -443,9 +443,8 @@ function App() {
               <div className="absolute left-0 top-0 bottom-0 w-1 bg-muted"></div>
               <div className="flex flex-col gap-12">
                 {[
-                  { title: 'LEAD DEVELOPER', company: 'PIXEL LABS', lvl: 42, tech: ['REACT', 'NODE.JS', 'WEBGL'] },
-                  { title: 'GAME ENGINE DEV', company: 'RETRO STUDIOS', lvl: 35, tech: ['C#', 'UNITY'] },
-                  { title: 'JUNIOR PROGRAMMER', company: 'STARTUP INC', lvl: 15, tech: ['JS', 'HTML5'] }
+                  { title: 'Software Developer', company: 'ViniBrawn Healthcare Solutions', lvl: 42, tech: ['NODE.JS', 'Flutter', 'Dart'] },
+                  { title: 'Open Source Contribution', lvl: 35, tech: ['Go', 'Python', 'JavaScript'] },
                 ].map((job, idx) => (
                   <div key={idx} className="relative bg-surface border-4 border-primary p-6 md:p-8 shadow-hard">
                     <div className="absolute -left-10 md:-left-[4.5rem] top-8 w-4 h-4 bg-primary"></div>
