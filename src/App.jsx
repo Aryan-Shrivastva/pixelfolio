@@ -8,7 +8,7 @@ const StarField = () => {
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
-    
+
     // Set canvas dimensions
     const resize = () => {
       canvas.width = window.innerWidth;
@@ -105,23 +105,23 @@ const BootScreen = ({ onComplete }) => {
   // Generate logs continuously
   useEffect(() => {
     if (isExiting) return;
-    
+
     const modules = ['CORE_KERNEL', 'RAG_PIPELINE', 'NEURAL_LINK', 'VECTOR_DB', 'UI_RENDERER', 'PIXEL_MATRIX', 'AUDIO_SYS', 'NET_SOCKET', 'SYS_CACHE'];
     const actions = ['INITIALIZING', 'CONNECTING TO', 'VERIFYING', 'LOADING', 'MOUNTING', 'ALLOCATING', 'BYPASSING', 'OPTIMIZING', 'SYNCHRONIZING'];
     const statuses = ['OK', 'DONE', 'READY', 'COMPLETED', 'ESTABLISHED'];
 
     // Overclocking speed switch
     const speed = isSpeeding ? 15 : 60;
-    
+
     const interval = setInterval(() => {
       const mod = modules[Math.floor(Math.random() * modules.length)];
       const act = actions[Math.floor(Math.random() * actions.length)];
       const addr = '0x' + Math.floor(Math.random() * 0xFFFFFF).toString(16).toUpperCase().padStart(6, '0');
       const showStatus = Math.random() > 0.7;
-      const text = `${act} ${mod} AT ${addr}... ${showStatus ? statuses[Math.floor(Math.random()*statuses.length)] : ''}`;
-      
+      const text = `${act} ${mod} AT ${addr}... ${showStatus ? statuses[Math.floor(Math.random() * statuses.length)] : ''}`;
+
       const time = new Date().toISOString().substring(11, 23);
-      
+
       setLines(prev => {
         const newLines = [...prev, { text, time }];
         return newLines.length > 35 ? newLines.slice(newLines.length - 35) : newLines;
@@ -135,17 +135,17 @@ const BootScreen = ({ onComplete }) => {
   const endSpeed = () => setIsSpeeding(false);
 
   return (
-    <div 
+    <div
       className={`fixed inset-0 z-[100] bg-[#05050A] text-accent p-4 md:p-8 flex flex-col justify-end cursor-pointer select-none transition-opacity duration-500 ${isExiting ? 'opacity-0' : 'opacity-100'}`}
       onMouseDown={startSpeed}
       onMouseUp={endSpeed}
       onTouchStart={startSpeed}
       onTouchEnd={endSpeed}
     >
-      <div 
+      <div
         ref={scrollRef}
         className={`font-vt323 text-xs md:text-sm tracking-widest uppercase leading-snug font-bold overflow-hidden relative z-10 transition-all duration-300 ${isSpeeding ? 'opacity-100' : 'opacity-80'}`}
-        style={{ 
+        style={{
           maskImage: 'linear-gradient(to bottom, transparent, black 15%)',
           WebkitMaskImage: 'linear-gradient(to bottom, transparent, black 15%)',
           maxHeight: '100%',
@@ -167,7 +167,7 @@ const BootScreen = ({ onComplete }) => {
           })}
         </div>
       </div>
-      
+
       <div className="absolute bottom-4 right-4 md:bottom-8 md:right-8 text-xs text-muted font-vt323 animate-pulse whitespace-nowrap">
         {'> '}CLICK_AND_HOLD_TO_OVERCLOCK
       </div>
@@ -182,11 +182,11 @@ const TypewriterHeading = ({ texts, delay = 150, pause = 1500, start = true }) =
 
   useEffect(() => {
     if (!start) return;
-    
+
     let timeout;
     const i = loopNum % texts.length;
     const text = texts[i];
-    
+
     if (isDeleting) {
       if (currentText === '') {
         timeout = setTimeout(() => {
@@ -234,9 +234,8 @@ const PageTransition = ({ children }) => {
   return (
     <div
       ref={domRef}
-      className={`transition-all duration-700 ease-out ${
-        isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-24 blur-[2px]'
-      }`}
+      className={`transition-all duration-700 ease-out ${isVisible ? 'opacity-100 translate-y-0 blur-none' : 'opacity-0 translate-y-24 blur-[2px]'
+        }`}
     >
       {children}
     </div>
@@ -258,7 +257,7 @@ function App() {
     <div className="min-h-screen text-text uppercase relative">
       {!isBooted && <BootScreen onComplete={() => setIsBooted(true)} />}
       <StarField />
-      
+
       {/* Top Navigation Bar */}
       <nav className="fixed top-0 w-full h-[80px] bg-[#05050A] border-b-4 border-primary shadow-hard z-50 flex items-center justify-between px-8">
         <div className="text-xl tracking-tighter font-arcade">BINARY_ARCHIVE_v1.0</div>
@@ -278,13 +277,13 @@ function App() {
 
       {/* Main Content Area */}
       <main className="pt-[120px] px-8 max-w-7xl mx-auto flex flex-col gap-32 pb-32">
-        
+
         {/* 1. Home (Terminal Hero) */}
         <PageTransition>
           <section id="home" className="min-h-[80vh] flex flex-col justify-center gap-12 pt-16">
             <div className="text-center flex flex-col gap-6">
               <h1 className="text-4xl md:text-5xl lg:text-[60px] leading-tight text-white mb-4 font-arcade min-h-[72px]">
-                <TypewriterHeading 
+                <TypewriterHeading
                   texts={[
                     "Aryan Shrivastva",
                     "I Software Developer",
@@ -292,16 +291,16 @@ function App() {
                     "I CodeChef",
                     "I like Formula 1",
                     "Daniel Riicciardoo"
-                  ]} 
-                  delay={100} 
-                  pause={1500} 
+                  ]}
+                  delay={100}
+                  pause={1500}
                   start={isBooted}
                 />
               </h1>
-              
+
               <div className="inline-block mx-auto bg-surface border-4 border-muted p-6 text-primary max-w-3xl">
                 <p className="text-lg md:text-xl leading-loose font-vt323 tracking-wide">
-                   {'> '}さて、こんにちは！ 👋<span className="animate-pulse">█</span>
+                  {'> '}さて、こんにちは！ 👋<span className="animate-pulse">█</span>
                 </p>
               </div>
             </div>
@@ -318,16 +317,16 @@ function App() {
         <PageTransition>
           <section id="projects" className="scroll-mt-[100px] flex flex-col items-center">
             <h2 className="text-3xl font-arcade text-primary mb-16">PROJECTS</h2>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl">
               {/* Project Card 1 */}
               <div className="bg-[#0A0A0E] border border-gray-600 p-4 flex flex-col">
                 <div className="w-full aspect-square bg-black border-2 border-black overflow-hidden mb-4">
-                   <img src="/pixel_quest_1774637992816.png" className="w-full h-full object-cover" style={{ imageRendering: 'pixelated' }} alt="Pixel Quest" />
+                  <img src="/pixel_quest_1774637992816.png" className="w-full h-full object-cover" style={{ imageRendering: 'pixelated' }} alt="Smart-B-roll-inserter" />
                 </div>
-                <h3 className="text-xl text-white font-vt323 tracking-widest mb-2 font-bold">PIXEL QUEST</h3>
+                <h3 className="text-xl text-white font-vt323 tracking-widest mb-2 font-bold">Smart-B-roll-inserter</h3>
                 <p className="text-gray-400 font-vt323 text-lg normal-case leading-snug mb-6 flex-1">
-                  A turn-based RPG made in react. explore dungeons and fight with monsters!
+                  An intelligent system that automatically plans how B-roll clips should be inserted into an A-roll (talking-head / UGC) video using semantic matching and AI-powered transcription.
                 </p>
                 <button className="w-full bg-black text-primary border border-primary py-2 font-vt323 text-xl hover:bg-[#1a1a00]">
                   + VIEW PROJECT
@@ -337,11 +336,11 @@ function App() {
               {/* Project Card 2 */}
               <div className="bg-[#0A0A0E] border border-gray-600 p-4 flex flex-col">
                 <div className="w-full aspect-square bg-black border-2 border-black overflow-hidden mb-4">
-                   <img src="/retro_website_1774638020838.png" className="w-full h-full object-cover" style={{ imageRendering: 'pixelated' }} alt="Retro Website" />
+                  <img src="/retro_website_1774638020838.png" className="w-full h-full object-cover" style={{ imageRendering: 'pixelated' }} alt="LogWrite" />
                 </div>
-                <h3 className="text-xl text-white font-vt323 tracking-widest mb-2 font-bold">RETRO WEBSITE</h3>
+                <h3 className="text-xl text-white font-vt323 tracking-widest mb-2 font-bold">LogWrite</h3>
                 <p className="text-gray-400 font-vt323 text-lg normal-case leading-snug mb-6 flex-1">
-                  A 90s-style personal website made with react. designed like an old computer!
+                  A personal area where you keep your journal and as well as use it as for your multitasking
                 </p>
                 <button className="w-full bg-black text-primary border border-primary py-2 font-vt323 text-xl hover:bg-[#1a1a00]">
                   + VIEW PROJECT
@@ -351,18 +350,18 @@ function App() {
               {/* Project Card 3 */}
               <div className="bg-[#0A0A0E] border border-gray-600 p-4 flex flex-col">
                 <div className="w-full aspect-square bg-black border-2 border-black overflow-hidden mb-4">
-                   <img src="/space_invaders_1774638044434.png" className="w-full h-full object-cover" style={{ imageRendering: 'pixelated' }} alt="Space Invaders JS" />
+                  <img src="/space_invaders_1774638044434.png" className="w-full h-full object-cover" style={{ imageRendering: 'pixelated' }} alt="Loading......" />
                 </div>
-                <h3 className="text-xl text-white font-vt323 tracking-widest mb-2 font-bold">SPACE INVADERS JS</h3>
+                <h3 className="text-xl text-white font-vt323 tracking-widest mb-2 font-bold">Loading......</h3>
                 <p className="text-gray-400 font-vt323 text-lg normal-case leading-snug mb-6 flex-1">
-                  A classic Space Invaders game made with vanilla Javascript and canvas!
+                  Loading......
                 </p>
                 <button className="w-full bg-black text-primary border border-primary py-2 font-vt323 text-xl hover:bg-[#1a1a00]">
                   + VIEW PROJECT
                 </button>
               </div>
             </div>
-            
+
             <button onClick={() => scrollToSection('HOME')} className="mt-12 border border-gray-400 text-white font-vt323 text-xl px-6 py-2 hover:bg-[#111]">
               BACK TO TOP
             </button>
@@ -373,12 +372,12 @@ function App() {
         <PageTransition>
           <section id="blog" className="scroll-mt-[100px] flex flex-col items-center">
             <h2 className="text-3xl font-arcade text-primary mb-12">ARYANS BLOG</h2>
-            
+
             <div className="w-full max-w-4xl border-t border-b border-gray-600 bg-background/80 relative pb-4">
               {/* Top corner accents */}
               <div className="absolute top-[-10px] left-4 border-b-[10px] border-b-gray-800 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent w-0 h-0"></div>
               <div className="absolute top-[-10px] right-4 border-b-[10px] border-b-gray-800 border-l-[10px] border-l-transparent border-r-[10px] border-r-transparent w-0 h-0"></div>
-              
+
               <div className="flex flex-col">
                 {/* Blog Post 1 */}
                 <div className="p-8 border-b border-gray-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
@@ -439,7 +438,7 @@ function App() {
         <PageTransition>
           <section id="experience" className="scroll-mt-[100px]">
             <h2 className="text-3xl font-arcade text-white border-b-4 border-primary inline-block pb-2 mb-12">QUEST_LOG</h2>
-            
+
             <div className="relative pl-8 md:pl-16">
               <div className="absolute left-0 top-0 bottom-0 w-1 bg-muted"></div>
               <div className="flex flex-col gap-12">
@@ -450,7 +449,7 @@ function App() {
                 ].map((job, idx) => (
                   <div key={idx} className="relative bg-surface border-4 border-primary p-6 md:p-8 shadow-hard">
                     <div className="absolute -left-10 md:-left-[4.5rem] top-8 w-4 h-4 bg-primary"></div>
-                    
+
                     <div className="flex justify-between items-start mb-4">
                       <div>
                         <h3 className="text-2xl font-vt323 text-white mb-2">{job.title}</h3>
@@ -460,7 +459,7 @@ function App() {
                         LVL {job.lvl}
                       </div>
                     </div>
-                    
+
                     <div className="flex flex-wrap gap-2 mt-6">
                       {job.tech.map(t => (
                         <span key={t} className="bg-accent font-vt323 text-white px-2 py-1 text-lg">{t}</span>
