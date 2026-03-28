@@ -5,18 +5,23 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     background-color: #05050A;
     color: #FFFFFF;
     font-family: 'VT323', monospace;
     margin: 0;
     image-rendering: pixelated;
+    /* Hide scrollbar for IE, Edge and Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
 
 * {
   border-radius: 0 !important;
-  transition: none !important;
 }
 
 @layer utilities {
@@ -39,14 +44,7 @@
   background: #05050A;
 }
 
+/* Hide scrollbar for Chrome, Safari and Opera */
 ::-webkit-scrollbar {
-  width: 12px;
-}
-::-webkit-scrollbar-track {
-  background: #05050A;
-  border-left: 2px solid #888888;
-}
-::-webkit-scrollbar-thumb {
-  background: #FFFF00;
-  border: 2px solid #000;
+  display: none;
 }
